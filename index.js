@@ -14,21 +14,16 @@
             return
         }
 
-        let locations = new Promise((resolve, reject) => {
-            fetchLocations(locationQuery).then(locations => resolve(locations))
-        })
-
-        locations
+        fetchLocations()
+            .then(res => res.json())
+            .then(locations => locations.filter(filterLocations))
             .then(locations => locations.map(location => createListItem(location)))
             .then(list => createList(list))
             .catch(err => console.log(err))
     }
 
-    function fetchLocations(location) {
+    function fetchLocations() {
         return fetch(locationsAPIEnpoint)
-                .then(res => res.json())
-                .then(locations => locations.filter(filterLocations))
-                .catch(err => console.log(err))
     }
 
     function filterLocations(location) {
